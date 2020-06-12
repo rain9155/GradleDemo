@@ -1,0 +1,39 @@
+/**
+ * project2的build.gradle：配置task
+ */
+
+//gradle为每个task定义了默认的Property， 比如description、group、logger等
+//我们可以在定义task时对这些Property进行赋值
+task task1{
+ 	group = 'MyGroup'
+ 	description = 'Hello World'
+
+ 	doLast{
+ 		println "task分组：${group}"
+ 		println "task描述：${description}"
+ 	}
+}
+
+//或者在定义task之后才对task进行配置
+task task2{
+	doLast{
+		println "task分组：${group}"
+ 		println "task描述：${description}" 
+	}
+}
+task2{
+	group = 'MyGroup'
+ 	description = 'Hello World'
+}
+
+//等效于task2
+task task3{
+	doLast{
+		println "task分组：${group}"
+ 		println "task描述：${description}" 
+	}
+}
+task3.configure{
+	group = 'MyGroup'
+ 	description = 'Hello World'
+}

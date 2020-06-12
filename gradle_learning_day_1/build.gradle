@@ -1,0 +1,37 @@
+/**
+ * project1的build.gradle：task的创建
+ */
+
+//通过task方法可以创建一个task，通过task方法创建的task都会被放到Project的TaskContainer中
+task task1{
+	doFirst{
+		println 'one'
+	}
+
+	doLast{
+ 		println 'two'
+ 	}
+}
+//或者
+def t = task task2
+t.doLast{
+	println 'Hello World'
+}
+
+//通过TaskContainer的create方法创建一个task
+tasks.create(name: 'task3'){
+	doLast{
+		println 'Hello World'
+	}
+}
+
+//创建task时通过dependsOn声明task之间的依赖关系，依赖的task先执行
+task task4(dependsOn: task3){
+	doLast{
+		println 'Hello World'
+	}
+}
+//或者在创建task之后再声明task之间的依赖关系
+task3.dependsOn task2
+
+
