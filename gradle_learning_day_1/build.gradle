@@ -1,5 +1,6 @@
 /**
  * project1的build.gradle：task的创建
+ * task是gradle执行的最小单元，我们创建的task如果没有指定它的类型，那么这个task默认就是DefaultTask类型
  */
 
 //通过task方法可以创建一个task，通过task方法创建的task都会被放到Project的TaskContainer中
