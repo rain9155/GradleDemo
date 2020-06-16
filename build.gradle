@@ -3,17 +3,68 @@
  * references:
  * 1、https://www.cnblogs.com/davenkin/p/gradle-learning-1.html
  * 2、https://docs.gradle.org/current/userguide/getting_started.html
+ * 3、https://dongchuan.gitbooks.io/gradle-user-guide-/installing_gradle
+ * 4、https://juejin.im/post/5cd441f851882554b86d088b#heading-14
  */
 
-//1、gradle的生命周期阶段：init(初始化阶段) -> configure(配置阶段) -> execute(执行阶段)
-//init：
-//configure：
-//execute：
+ //1、Gradle的三大基本脚本：init.gradle、settings.gradle、build.gradle
+ //init.gradle: Gradle的初始化脚本，对应Gradle实例，在每个项目被构建之前调用
+ //settings.gradle：Gradle的多项目配置脚本，对应Settings实例，它在Gradle构建时用于确定哪些项目需要被构建
+ //build.gradle：Gradle项目的配置脚本，对应Project实例，在项目构建时，它用于配置项目
 
+//2、Gradle构建时的生命周期阶段：init(初始化阶段) -> configure(配置阶段) -> execute(执行阶段)
+//init：确定哪些项目需要参与构建，为需要构建的项目创建Project对象
+//configure：执行build.gradle脚本配置相应的项目，并生成task
+//execute：执行需要执行的task
 
-//2、Gradle的增量式构建：在执行一个task时，如果它的输入与输出与前一次执行没有发生变化，那么gradle就认为该task是最新的(UP-TO-DATA)
+//3、Gradle的增量式构建：在执行一个task时，如果它的输入与输出与前一次执行没有发生变化，那么gradle就认为该task是最新的(UP-TO-DATA)
 //每一个task都有inputs和outputs属性，它们的类型分别为TaskInputs和TaskOutputs，inputs或outputs可以是文件、文件夹、Project的某个Property等，
 //我们可以在定义task时指定inputs或outputs属性从而启用gradle的增量式构建，这样可以避免一个没有变化的task被反复构建，从而提高整个gradle的构建效率
 
-//3、
 
+//4、Gradle构建的生命周期回调
+this.gradle.addBuildListener(new BuildListener() {
+    @Override
+    void buildStarted(Gradle gradle) {
+    	println 'Gradle构建开始'
+    }
+
+    @Override
+    void settingsEvaluated(Settings settings) {
+    	println 'settings.gradle解析完成'
+    }
+
+    @Override
+    void projectsLoaded(Gradle gradle) {
+    	println '所有项目从settings加载完成'
+    }
+
+    @Override
+    void projectsEvaluated(Gradle gradle) {
+    	println '所有项目构建完成'
+    }
+
+    @Override
+    void buildFinished(BuildResult result) {
+    	println 'Gradle构建结束'
+    }
+})
+
+//5、项目构建的生命周期回调
+this.beforeEvaluate {
+    println '项目开始构建'
+}
+this.afterEvaluate {
+	 println '项目构建结束'
+}
+
+//6、task构建的生命周期回调
+this.gradle.taskGraph.whenReady {
+    println("task 图构建完成")
+}
+this.gradle.taskGraph.beforeTask {
+    println("每个 task 执行前会调这个接口")
+}
+this.gradle.taskGraph.afterTask {
+    println("每个 task 执行完成会调这个接口")
+}
