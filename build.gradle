@@ -24,9 +24,15 @@
 
 //4、Gradle构建的生命周期回调
 this.gradle.addBuildListener(new BuildListener() {
+
     @Override
     void buildStarted(Gradle gradle) {
-    	println 'Gradle构建开始'
+        println 'Gradle构建开始'
+    }
+
+    @Override
+    void beforeSettings(Settings settings) {
+        println '准备解析settings.gradle'
     }
 
     @Override
@@ -60,11 +66,13 @@ this.afterEvaluate {
 
 //6、task构建的生命周期回调
 this.gradle.taskGraph.whenReady {
-    println("task 图构建完成")
+    println("task图构建完成")
 }
 this.gradle.taskGraph.beforeTask {
-    println("每个 task 执行前会调这个接口")
+    //每个task开始执行时会调用这个方法
+    println("task开始执行")
 }
 this.gradle.taskGraph.afterTask {
-    println("每个 task 执行完成会调这个接口")
+    //每个task执行结束时会调用这个方法
+    println("task执行完成")
 }

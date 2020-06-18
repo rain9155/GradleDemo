@@ -1,0 +1,37 @@
+/**
+ * project3的build.gradle: Groovy的闭包
+ * 在Gradle中大量使用了Groovy的闭包，在Groovy中使用Closure类型来表示闭包，Groovy的
+ * 闭包有一个委托机制(delegate), 通过delegate可以把闭包中的执行代码委托给任意对象来执行
+ */
+
+ class Child{
+ 	private def name
+ }
+
+class Parent{
+
+	private def name
+
+	//Parent的configureChild方法可以把closure闭包委托给child对象执行
+	def configureChild(child, closure){
+		closure.delegate = child
+		closure()
+	}
+}
+
+ task configureTask{
+
+ 	doLast{
+ 		def child = new Child()
+ 		def parent = new Parent()
+
+ 		//配置name属性
+ 		parent.configureChild(child){
+ 			name = "child name"
+ 		}
+
+ 		//输出parent name = null, child name = child name
+ 		println "parent name = $parent.name, child name = $child.name"
+ 	}
+
+ }

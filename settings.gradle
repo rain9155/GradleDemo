@@ -9,4 +9,5 @@
 
 rootProject.name = 'GradleDemo'
 
-include ':gradle_learning_day_1', ':gradle_learning_day_2', ':gradle_learning_day_3', ':gradle_learning_day_4', ':gradle_learning_day_5', ':lib_task'
+include ':gradle_learning_day_1', ':gradle_learning_day_2', ':gradle_learning_day_3', ':gradle_learning_day_4', ':gradle_learning_day_5', ':gradle_learning_day_6'
+include ':gradle_plugin'

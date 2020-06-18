@@ -1,0 +1,52 @@
+/**
+ * project6的build.gradle: 自定义Gradle Plugin
+ * Gradle Plugin就是一系列task的集合，通过实现Plugin<T>接口的apply方法就可以自定义plugin，
+ * 类似于task，在gradle中也提供了3种方式来放置自定义plugin的源码
+ */
+
+//方式1: 直接在build.gradle中定义
+
+//方式2: 在rootProjectDir/buildSrc/src/main/[java/kotlin/groovy]中定义
+//使用这个自定义plugin需要使用这个plugin的全权限定名，然后在build.gradle文件中apply进来
+//如：apply plugin: com.example.plugin.MyPlugin
+
+//方式3：在独立项目或模块中编写插件代码，然后通过maven或其他发布工具上传到本地或远端repo中，然后在其他项目的build.gradle中引入使用
+//编写自定义插件步骤：
+//1、在rootProjectDir/src/main/[java/kotlin/groovy]编写插件代码
+//2、在rootProjectDir/src/main/resources/META-INF/gradle-plugins/中编写插件的properties文件
+//3、在rootProjectDir的build.gradle中通过maven或其他发布插件打包自定义插件为jar，然后把插件jar和pom文件上传
+//引用插件步骤：
+//1、在buildscript块中的repositories块定义repo地址
+//2、在buildscript块中的dependencies块定义插件jar的classpath，classpath为发布插件时的groupId:artifactId:version
+//3、在项目的build.gradle中apply插件名字
+
+buildscript {
+	repositories {
+		//添加maven本地repo
+		mavenLocal()
+		//添加本地maven路径
+		maven {
+			url uri('../repo')
+		}
+	}
+
+	dependencies {
+		//定义插件jar的classpath路径，gradle编译时会扫描该classpath下的所有jar文件
+		//classpath 'com.example.customplugin:myplugin:1.0'
+		classpath 'com.example.customplugin:myplugin:2.0'
+	}
+}
+
+//引用插件
+apply plugin: 'myplugin'
+
+//使用DSL配置插件的属性
+outerExt{
+	name 'rain'
+	message 'hello'
+
+	inner{
+		name '9155'
+		message 'word'
+	}
+}
