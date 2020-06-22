@@ -11,13 +11,13 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/gradle_learning_day_1" />
-            <option value="$PROJECT_DIR$/gradle_learning_day_2" />
-            <option value="$PROJECT_DIR$/gradle_learning_day_3" />
-            <option value="$PROJECT_DIR$/gradle_learning_day_4" />
-            <option value="$PROJECT_DIR$/gradle_learning_day_5" />
-            <option value="$PROJECT_DIR$/gradle_learning_day_6" />
             <option value="$PROJECT_DIR$/gradle_plugin" />
+            <option value="$PROJECT_DIR$/subproject_1" />
+            <option value="$PROJECT_DIR$/subproject_2" />
+            <option value="$PROJECT_DIR$/subproject_3" />
+            <option value="$PROJECT_DIR$/subproject_4" />
+            <option value="$PROJECT_DIR$/subproject_5" />
+            <option value="$PROJECT_DIR$/subproject_6" />
           </set>
         </option>
         <option name="useQualifiedModuleNames" value="true" />

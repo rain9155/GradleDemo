@@ -4,9 +4,9 @@
  * 闭包有一个委托机制(delegate), 通过delegate可以把闭包中的执行代码委托给任意对象来执行
  */
 
- class Child{
- 	private def name
- }
+class Child{
+	private def name
+}
 
 class Parent{
 

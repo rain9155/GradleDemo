@@ -19,7 +19,6 @@
  		println "Property4 = $customProperty4"
  	}
  }
-
  //方式2: 在执行gradle命令时通过-P参数来添加自定义的Property
  //如：gradle -P customProperty3="this is property3" showCustomProperty
 
@@ -28,4 +27,3 @@
 
  //方式4: 通过环境变量设置Property，其中在定义环境变量时每一个Property都要以‘ORG_GRADLE_PROJECT_’为前缀
  //如(mac)：export ORG_GRADLE_PROJECT_customProperty5="this is property5"
-

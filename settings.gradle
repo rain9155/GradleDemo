@@ -6,8 +6,7 @@
  * Detailed information about configuring a multi-project build in Gradle can be found
  * in the user manual at https://docs.gradle.org/6.5/userguide/multi_project_builds.html
  */
-
 rootProject.name = 'GradleDemo'
 
-include ':gradle_learning_day_1', ':gradle_learning_day_2', ':gradle_learning_day_3', ':gradle_learning_day_4', ':gradle_learning_day_5', ':gradle_learning_day_6'
+include ':subproject_1', ':subproject_2', ':subproject_3', ':subproject_4', ':subproject_5', ':subproject_6'
 include ':gradle_plugin'
