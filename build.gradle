@@ -103,6 +103,9 @@ subprojects {
     apply plugin: 'groovy'
 }
 
-println name
+
+allprojects
+
+
 
 

@@ -1,5 +1,5 @@
 /**
- * project2的build.gradle：配置task
+ * 配置task:
  * gradle为每个task定义了默认的Property， 比如description、group、logger等,我们可以配置这些Property
  * gradle在执行一个task之前，会先配置这个task的Property，然后再执行这个task的执行代码块
  */
@@ -48,3 +48,12 @@ task4.configure{
 	group = 'MyGroup'
  	description = 'Hello World'
 }
+
+//创建task时通过dependsOn声明task之间的依赖关系，依赖的task先执行
+task task5(dependsOn: task4){
+	doLast{
+		println 'Hello World'
+	}
+}
+//或者在创建task之后再声明task之间的依赖关系
+task4.dependsOn task3

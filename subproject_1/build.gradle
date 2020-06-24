@@ -1,5 +1,5 @@
 /**
- * project1的build.gradle：task的创建
+ * task的创建:
  * task是gradle执行的最小单元，我们创建的task如果没有指定它的类型，那么这个task默认就是DefaultTask类型
  */
 
@@ -15,24 +15,22 @@ task task1{
 }
 //或者
 def t = task task2
+t.doFirst {
+	println 'one'
+}
 t.doLast{
-	println 'Hello World'
+	println 'two'
 }
 
 //通过TaskContainer的create方法创建一个task
 tasks.create(name: 'task3'){
-	doLast{
-		println 'Hello World'
+	doFirst{
+		println 'one'
 	}
-}
 
-//创建task时通过dependsOn声明task之间的依赖关系，依赖的task先执行
-task task4(dependsOn: task3){
 	doLast{
-		println 'Hello World'
+		println 'two'
 	}
 }
-//或者在创建task之后再声明task之间的依赖关系
-task3.dependsOn task2
 
 

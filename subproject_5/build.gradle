@@ -1,28 +1,37 @@
 /**
- * project5的build.gradle: 自定义Task类型
- * 我们平时通过task方法创建的task默认都属于DefaultTask类型，我们可以通过继承DefaultTask来自定义task类型，
- * gradle中也内置了很多具有特定功能的task，它们都间接继承自DefaultTask，如Copy(复制文件)、Delete(文件清理)等，
- * 在定义task的时候可以通过type指定task的类型，在gradle中有3种方式可以放置自定义task的源代码
+ * Groovy的闭包:
+ * 在Gradle中大量使用了Groovy的闭包，在Groovy中使用Closure类型来表示闭包，Groovy的
+ * 闭包有一个委托机制(delegate), 通过delegate可以把闭包中的执行代码委托给任意对象来执行
  */
 
- 
-//方式1: 直接在build.gradle文件中定义
-// class MyCustomTask extends DefaultTask{
-// 	@Optional
-// 	def message = 'hello world from myTask'
-
-// 	@TaskAction
-// 	def println(){
-// 		println message
-// 	}
-// }
-
-//方式2: 在rootProjectDir/buildSrc/src/main/[java/kotlin/groovy]中定义
-//gradle在构建时会自动的编译当前工程的buildSrc/src/main/[java/kotlin/groovy]目录下的源代码
-//使用这个task时需要使用这个task的全权限定名，如com.example.task.MyTask
-
-task myTask(type: com.example.task.MyTask){
-    message = 'custom message'
+class Child{
+	private def name
 }
 
-//方式3：新建一个gradle项目，在项目中编写task，然后上传到本地或远端repo，然后在其他项目的build.gradle中引入使用
+class Parent{
+
+	private def name
+
+	//Parent的configureChild方法可以把closure闭包委托给child对象执行
+	def configureChild(child, closure){
+		closure.delegate = child
+		closure()
+	}
+}
+
+ task configureTask{
+
+ 	doLast{
+ 		def child = new Child()
+ 		def parent = new Parent()
+
+ 		//配置name属性
+ 		parent.configureChild(child){
+ 			name = "child name"
+ 		}
+
+ 		//输出parent name = null, child name = child name
+ 		println "parent name = $parent.name, child name = $child.name"
+ 	}
+
+ }

@@ -8,17 +8,16 @@ import org.gradle.api.tasks.*
  */
 class MyTask extends DefaultTask{
 
- 	@Optional
- 	def message = 'hello world from myCustomTask'
+ 	def message = 'hello world from myTask'
 
  	@TaskAction
  	def println1(){
- 		println 'println1: $message'
+ 		println "println1: $message"
  	}
 
  	@TaskAction
  	def println2(){
- 		println 'println2: $message'
+ 		println "println2: $message"
  	}
  	
  }
