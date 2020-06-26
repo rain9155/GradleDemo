@@ -29,11 +29,7 @@ class MyPlugin implements Plugin<Project>{
 		def name
 		def message
 		//嵌套类
-	    private InnerExt innerExt
-
-	    public InnerExt getInnerExt(){
-	    	return innerExt
-	    }
+		InnerExt innerExt
 
 	    @javax.inject.Inject
 	    public OuterExt(ObjectFactory objectFactory){

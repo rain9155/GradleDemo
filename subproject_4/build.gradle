@@ -38,7 +38,7 @@ buildscript {
 }
 
 //引用插件
-apply plugin: 'myplugin'
+apply plugin: com.example.plugin.MyPlugin
 
 //使用DSL配置插件的属性
 outerExt{
