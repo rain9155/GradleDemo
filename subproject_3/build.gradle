@@ -25,4 +25,10 @@ task myTask(type: com.example.task.MyTask){
     message = 'custom message'
 }
 
+myTask.configure {
+    onlyIf { 
+        project.hasProperty('rain9155')
+    }
+}
+
 //方式3：新建一个gradle项目，在项目中编写task，然后上传到本地或远端repo，然后在其他项目的build.gradle中引入使用

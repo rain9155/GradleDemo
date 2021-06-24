@@ -34,3 +34,6 @@ tasks.create(name: 'task3'){
 }
 
 
+println tasks.named('task3').get().name
+
+
