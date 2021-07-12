@@ -1,7 +1,8 @@
 /**
  * 自定义Project的Property:
- * 类似于task，在project中，gradle也每个project定义了很多默认的Property，我可以配置它们，如：name(project的名字)、path(project的绝对路径)、description(project的描述信息)、
- * buildDir(project的构建结果存放目录)、version(project的版本号)、project(Project本身)、rootProject(根Project本身)等，同时我们也可以通过ext等方式来自定义project的Property
+ * 类似于task，在project中，gradle也每个project定义了很多默认的Property，我可以使用它们，如：name(project的名字)、path(project的绝对路径)、
+ * description(project的描述信息)、 buildDir(project的构建结果存放目录)、version(project的版本号)、project(Project本身)、rootProject(根Project本身)等，
+ * 同时我们也可以通过ext等方式来自定义project的Property, 在ext中定义的属性可以被外部使用，没有在ext中定义的属性只能在本project中可见
  */
 
 //方式1:在build.gradle中通过ext添加自定义的Property

@@ -15,6 +15,7 @@ class Parent{
 	//Parent的configureChild方法可以把closure闭包委托给child对象执行
 	def configureChild(child, closure){
 		closure.delegate = child
+		closure.resolveStrategy = Closure.DELEGATE_FIRST
 		closure()
 	}
 }
