@@ -24,6 +24,7 @@ buildscript {
 	repositories {
 		//添加maven本地repo
 		mavenLocal()
+
 		//添加本地maven路径
 		maven {
 			url uri('../repo')
@@ -33,20 +34,41 @@ buildscript {
 	dependencies {
 		//定义插件jar的classpath路径，gradle编译时会扫描该classpath下的所有jar文件
 		//classpath 'com.example.customplugin:myplugin:1.0'
-		classpath 'com.example.customplugin:myplugin:2.0'
+		//classpath 'com.example.customplugin:myplugin:2.0'
 	}
 }
 
 //引用插件
-apply plugin: com.example.plugin.MyPlugin
+plugins{
+	id 'com.example.customplugin.myplugin' version '2.0'
+}
+
+//apply plugin: com.example.plugin.MyPlugin
+
 
 //使用DSL配置插件的属性
 outerExt{
-	name 'rain'
 	message 'hello'
 
 	inner{
-		name '9155'
 		message 'word'
+	}
+}
+
+outerExts{
+	ext1{
+		message 'hello'
+
+		inner{
+			message 'word'
+		}
+	}
+
+	ext2{
+		message 'hello'
+
+		inner{
+			message 'word'
+		}
 	}
 }

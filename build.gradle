@@ -3,13 +3,13 @@
  */
 
  //1、Gradle的三大基本脚本：init.gradle、settings.gradle、build.gradle
- //init.gradle: Gradle的初始化脚本，对应Gradle实例，在每个项目被构建之前调用
- //settings.gradle：Gradle的多项目配置脚本，对应Settings实例，它在Gradle构建时用于确定哪些项目需要被构建
- //build.gradle：Gradle项目的配置脚本，对应Project实例，在项目构建时，它用于配置项目
+ //init.gradle: Gradle的初始化脚本，对应Gradle实例，在所有项目构建之前解析，需要通过--init-script指定位置或放置在GRADLE_USER_HOME目录下
+ //settings.gradle：Gradle的多项目配置脚本，对应Settings实例，所有项目构建之前解析，它用于确定哪些项目需要参与构建
+ //build.gradle：Gradle的项目配置脚本，对应Project实例，在项目构建时解析，它用于配置项目
 
 //2、Gradle构建时的生命周期阶段：init(初始化阶段) -> configure(配置阶段) -> execute(执行阶段)
-//init：确定哪些项目需要参与构建，为需要构建的项目创建Project对象
-//configure：执行build.gradle脚本配置相应的项目，并生成和配置task，构造task的关系依赖图
+//init：解析init.gradle脚本、编译buildSrc目录、解析gradle.properites文件、解析settings.gradle脚本(确定哪些项目需要参与构建，并为这些项目创建对应的Project实例)
+//configure：解析build.gradle脚本编译为对应的class文件并执行，执行class文件时会创建和配置task，然后会根据要执行的task构造关系依赖图
 //execute：根据关系依赖图执行task
 
 //3、Gradle的增量式构建：在执行一个task时，如果它的输入与输出与前一次执行没有发生变化，那么gradle就认为该task是最新的(UP-TO-DATA)
@@ -36,7 +36,7 @@
 //
 //    @Override
 //    void projectsLoaded(Gradle gradle) {
-//    	println '所有项目从settings加载完成'
+//    	println '所有项目从settings.gradle加载完成'
 //    }
 //
 //    @Override
@@ -50,50 +50,7 @@
 //    }
 //})
 
-this.gradle.buildStarted {
-    println "Gradle构建开始"
-}
-this.gradle.settingsEvaluated {
-    println "settings.gradle解析完成"
-}
-this.gradle.projectsLoaded {
-    println "所有项目从settings加载完成"
-}
-this.gradle.beforeProject {project ->
-    //每一个项目构建之前被调用
-    println "${project.name}项目开始构建"
-}
-this.gradle.afterProject {project ->
-    //每一个项目构建完成被调用
-    println "${project.name}项目构建完成"
-}
-this.gradle.projectsEvaluated {
-    println "所有项目构建完成"
-}
-this.gradle.taskGraph.whenReady {
-    println("task图构建完成")
-}
-this.gradle.taskGraph.beforeTask {task ->
-    //每个task开始执行时会调用这个方法
-    println("${task.name}task开始执行")
-}
-this.gradle.taskGraph.afterTask {task ->
-    //每个task执行结束时会调用这个方法
-    println("${task.name}task执行完成")
-}
-this.gradle.buildFinished {
-    println "Gradle构建结束"
-}
-
-//5、项目构建的生命周期回调
-this.beforeEvaluate {
-    println '项目开始构建'
-}
-this.afterEvaluate {
-    println '项目构建结束'
-}
-
-//6、多项目配置
+//5、多项目配置
 allprojects {
     repositories {
         mavenCentral()

@@ -1,41 +1,41 @@
-//应用groovy插件
-apply plugin: 'groovy'
+plugins{
+    //用来生成插件元数据(META-INF)和插件标记工件(Plugin Marker Artifact)
+    id 'java-gradle-plugin'
+    //用来生成发布插件任务
+    id 'maven-publish'
+}
+
+//通过publishing.repositories{}定义发布的maven仓库位置
+publishing.repositories{
+    maven {
+        url '../repo'
+    }
+}
+
+//通过publishing.publications{}定义发布的组件
+publishing.publications{
+    myplugin(MavenPublication){
+        groupId = 'com.example.customplugin'
+        artifactId = 'myplugin'
+        version = '1.0'
+        from components.java
+    }
+}
+
+group = 'com.example.customplugin'
+version = '2.0'
+
+//java-gradle-plugin提供的gradlePlugin扩展用于配置插件
+gradlePlugin {
+    plugins {
+        myplugin{
+            id = 'com.example.customplugin.myplugin'
+            implementationClass = 'com.example.plugin.MyPlugin'
+        }
+    }
+}
 
 dependencies {
-    //这样就可以使用Gradle和Groovy语法
+    //当没有引入java-gradle-plugin时，需要手动引入gradleApi，这样就可以使用Gradle和Groovy Api
     implementation gradleApi()
-}
-
-//应用maven插件
-apply plugin: 'maven'
-
-//通过install任务上传自定义插件的jar文件和pom文件到maven本地repo, maven本地repo路径为用～/.m/repository/
-install {
-    repositories.mavenInstaller {
-        //通过pom配置自定义插件的group、artifact和version，通过classpath引用自定义插件时为：groupId:artifactId:version
-        pom{
-            groupId = 'com.example.customplugin'
-            artifactId = 'myplugin'
-            version = '1.0'
-        }
-    }
-}
-
-//通过uploadArchives任务上传自定义插件的jar文件和pom文件, 可以上传到本地指定目录地址或远端repo地址
-uploadArchives{
-    repositories.mavenDeployer{
-        pom{
-            groupId = 'com.example.customplugin'
-            artifactId = 'myplugin'
-            version = '2.0'
-        }
-
-        //上传到本地
-        repository(url: uri('../repo'))
-
-        //上传到远端
-        //repository(url: uri('http://remote/repo')){
-        //    authentication(userName: "name", password: "***")
-        //}
-    }
 }

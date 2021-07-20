@@ -33,7 +33,15 @@ tasks.create(name: 'task3'){
 	}
 }
 
+//通过TaskContainer的register方法注册一个task，等到使用时再创建这个task
+tasks.register('task4'){
+	doFirst{
+		println 'one'
+	}
 
-println tasks.named('task3').get().name
+	doLast{
+		println 'two'
+	}
+}
 
 

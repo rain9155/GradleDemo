@@ -1,0 +1,16 @@
+println "load init.gradle"
+
+//等同于buildScript，为init.gradle引入外部依赖
+initscript {
+    repositories {
+
+    }
+    dependencies {
+
+    }
+}
+
+//可以为所有项目配置
+allprojects {
+
+}
