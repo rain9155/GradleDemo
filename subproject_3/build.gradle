@@ -1,3 +1,9 @@
+import com.oracle.tools.packager.IOUtils
+import org.gradle.work.Incremental
+import org.gradle.work.InputChanges
+
+import java.nio.file.Files
+
 /**
  * 自定义Task类型:
  * 我们平时通过task方法创建的task默认都属于DefaultTask类型，我们可以通过继承DefaultTask来自定义task类型，
@@ -5,7 +11,6 @@
  * 在定义task的时候可以通过type指定task的类型，在gradle中有3种方式可以放置自定义task的源代码
  */
 
- 
 //方式1: 直接在build.gradle文件中定义
 // class MyTask extends DefaultTask{
 // 	@Optional
@@ -21,14 +26,79 @@
 //gradle在构建时会自动的编译当前工程的buildSrc/src/main/[java/kotlin/groovy]目录下的源代码
 //使用这个task时需要使用这个task的全权限定名，如com.example.task.MyTask
 
-task myTask(type: com.example.task.MyTask){
+//方式3：新建一个gradle项目，在项目中编写task，然后上传到本地或远端repo，然后在其他项目的build.gradle中引入使用
+
+class MyTask extends DefaultTask{
+
+    def message = 'hello world from myTask'
+
+    @TaskAction
+    def println1(){
+        println "println1: $message"
+    }
+
+    @TaskAction
+    def println2(){
+        println "println2: $message"
+    }
+
+    @TaskAction
+    def println3(){
+        println "println3: $message"
+    }
+
+}
+
+task myTask(type: MyTask){
     message = 'custom message'
 }
 
-myTask.configure {
-    onlyIf { 
-        project.hasProperty('rain9155')
+class CopyTask extends DefaultTask{
+
+    @Incremental
+    @InputFiles
+    FileCollection from
+
+    @OutputDirectory
+    Directory to
+
+    /**
+     * 全量构建
+     */
+    @TaskAction
+    void execute(){
+//        File file = from.getSingleFile()
+//        if(file.isDirectory()){
+//            from.getAsFileTree().each {
+//                copyFileToDir(it, to)
+//            }
+//        }else{
+//            copyFileToDir(from, to)
+//        }
+    }
+
+    /**
+     * 增量式构建
+     * @param inputChanges 持有变化的文件
+     */
+    @TaskAction
+    void executeIncremental(InputChanges inputChanges) {
+        println "execute: isIncremental = ${inputChanges.isIncremental()}"
+        inputChanges.getFileChanges(from).each {change ->
+            println "changeType = ${change.changeType}, changeFile = ${change.file.name}"
+            if(change.fileType != FileType.DIRECTORY){
+                copyFileToDir(change.file, to)
+            }
+        }
+    }
+
+    private static void copyFileToDir(File src, Directory dir){
+        File dest = new File("${dir.getAsFile().path}/${src.name}")
+        IOUtils.copyFile(src, dest)
     }
 }
 
-//方式3：新建一个gradle项目，在项目中编写task，然后上传到本地或远端repo，然后在其他项目的build.gradle中引入使用
+task copyTask(type: CopyTask){
+    from = files('from')
+    to = layout.projectDirectory.dir('to')
+}
