@@ -1,3 +1,4 @@
+import org.gradle.work.*
 
 /**
  * 自定义Task类型:
@@ -79,12 +80,14 @@ class CopyTask extends DefaultTask{
    @TaskAction
    void executeIncremental(InputChanges inputChanges) {
        println "execute: isIncremental = ${inputChanges.isIncremental()}"
-        inputChanges.getFileChanges(from).each {change ->
-            println "changeType = ${change.changeType}, changeFile = ${change.file.name}"
-            if(change.fileType != FileType.DIRECTORY){
-                copyFileToDir(change.file, to)
-            }
-        }
+       inputChanges.getFileChanges(from).each {change ->
+           if(change.fileType != FileType.DIRECTORY){
+               println "changeType = ${change.changeType}, changeFile = ${change.file.name}"
+               if(change.changeType != ChangeType.REMOVED){
+                   copyFileToDir(change.file, to)
+               }
+           }
+       }
    }
 
     private static void copyFileToDir(File src, Directory dir){
