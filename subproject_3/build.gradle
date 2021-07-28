@@ -1,8 +1,3 @@
-import com.oracle.tools.packager.IOUtils
-import org.gradle.work.Incremental
-import org.gradle.work.InputChanges
-
-import java.nio.file.Files
 
 /**
  * 自定义Task类型:
@@ -65,36 +60,41 @@ class CopyTask extends DefaultTask{
     /**
      * 全量构建
      */
-    @TaskAction
-    void execute(){
-//        File file = from.getSingleFile()
-//        if(file.isDirectory()){
-//            from.getAsFileTree().each {
-//                copyFileToDir(it, to)
-//            }
-//        }else{
-//            copyFileToDir(from, to)
-//        }
-    }
+    // @TaskAction
+    // void execute(){
+    //    File file = from.getSingleFile()
+    //    if(file.isDirectory()){
+    //        from.getAsFileTree().each {
+    //            copyFileToDir(it, to)
+    //        }
+    //    }else{
+    //        copyFileToDir(from, to)
+    //    }
+    // }
 
     /**
      * 增量式构建
      * @param inputChanges 持有变化的文件
      */
-    @TaskAction
-    void executeIncremental(InputChanges inputChanges) {
-        println "execute: isIncremental = ${inputChanges.isIncremental()}"
+   @TaskAction
+   void executeIncremental(InputChanges inputChanges) {
+       println "execute: isIncremental = ${inputChanges.isIncremental()}"
         inputChanges.getFileChanges(from).each {change ->
             println "changeType = ${change.changeType}, changeFile = ${change.file.name}"
             if(change.fileType != FileType.DIRECTORY){
                 copyFileToDir(change.file, to)
             }
         }
-    }
+   }
 
     private static void copyFileToDir(File src, Directory dir){
         File dest = new File("${dir.getAsFile().path}/${src.name}")
-        IOUtils.copyFile(src, dest)
+        if(!dest.exists()){
+            dest.createNewFile()
+        }
+        dest.withOutputStream {
+            it.write(new FileInputStream(src).getBytes())
+        }
     }
 }
 
